@@ -1,0 +1,32 @@
+<div class="container-fluid" id="AgencyInfo">
+    <form class="needs-validation" novalidate>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+               <label for="validationCustom01">DS</label>
+      <input type="text" class="form-control" id="validationCustom01" placeholder="First name" value="Mark" required>
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="editorDSPage">DS</span>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
+                        aria-label="Small" aria-describedby="editorDSPage" list="DSSuggestions">
+                    <datalist id="DSSuggestions">
+                    </datalist>
+                    </input>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="input-group input-group-sm mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="SearchAreaByName">Metro Name</span>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
+                        aria-label="Small" aria-describedby="SearchAreaByName" list="AreaNameSuggestions">
+                    <datalist id="AreaNameSuggestions">
+                    </datalist>
+                    </input>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary">GO!</button>
+    </form>

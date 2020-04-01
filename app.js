@@ -3,7 +3,7 @@
 
 window.addEventListener("DOMContentLoaded", function () {
     var areaSheetArray = [
-        ["AreaIdSuggestions", "AreaNameSuggestions", "DefaultDSSuggestions"],
+        ["AreaIdSuggestions", "AreaNameSuggestions", "DSSuggestions"],
         [22, "San Fransisco SF Bay Area, CA", 7],
         [81, "Chicago, IL", 14],
         [121, "NYC-NJ", 25],
@@ -190,44 +190,37 @@ window.addEventListener("DOMContentLoaded", function () {
     ];
     function doFirst() {
         var agencyAreaInfoHtml =
-`
-            <div class="container-fluid" id="AgencyInfo">
-                <div class="row" >
-                    <div class="col-sm">
-                        <div class="input-group input-group-sm mb-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="SearchAreaByID">Area ID</span>
-                            </div>
-                            <input type="text" id="AreaIDData" class="form-control form-control-sm" placeholder="Start Typing..." aria-label="Small" aria-describedby="SearchAreaByID" list="AreaIdSuggestions">
-                                <datalist id="AreaIdSuggestions">
-                                </datalist>
-                            </input>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="SearchAreaByName">Area Name</span>
-                            </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Start Typing..." aria-label="Small" aria-describedby="SearchAreaByName" list="AreaNameSuggestions">
-                                <datalist id="AreaNameSuggestions">
-                                </datalist>
-                            </input>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="AreaDefaultDS">Area Default DS</span>
-                            </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Start Typing..." aria-label="Small" aria-describedby="AreaDefaultDS" list="DefaultDSSuggestions">
-                                <datalist id="DefaultDSSuggestions">
-                                </datalist>
-                            </input>
-                        </div>
-                    </div>
+            `
+<div class="container-fluid" id="AgencyInfo">
+<form class="needs-validation" novalidate>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="editorDSPage">DS</span>
                 </div>
+                <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
+                    aria-label="Small" aria-describedby="editorDSPage" list="DSSuggestions">
+                <datalist id="DSSuggestions">
+                </datalist>
+                </input>
             </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="input-group input-group-sm mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="SearchAreaByName">Metro Name</span>
+                </div>
+                <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
+                    aria-label="Small" aria-describedby="SearchAreaByName" list="AreaNameSuggestions">
+                <datalist id="AreaNameSuggestions">
+                </datalist>
+                </input>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary">GO!</button>
+</form>     
 
         `;
 
@@ -239,30 +232,29 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
         updateSuggestionsList(areaSheetArray);
-        document.addEventListener('change', function(e){
-            if(e.target.tagName=="INPUT"){
-                    alert("Target ID" + e.target.id);
-             agencyInfoautoComplete(e.target.id);
+        document.addEventListener('change', function (e) {
+            if (e.target.tagName == "INPUT") {
+                alert("Target ID" + e.target.id);
+                agencyInfoautoComplete(e.target.id);
             }
-          })
+        })
     }
 
-function agencyInfoautoComplete(elemID)
-{
-   var elemIDlocal = document.getElementById(elemID);
-   /*if (elemIDlocal.id == "areaIDData")
-   {
-        var areaNum = areaSheetArray.map(function(value){
-        return value == 0;
-        });
-   }
-   */
-}
+    function agencyInfoautoComplete(elemID) {
+        var elemIDlocal = document.getElementById(elemID);
+        /*if (elemIDlocal.id == "areaIDData")
+        {
+             var areaNum = areaSheetArray.map(function(value){
+             return value == 0;
+             });
+        }
+        */
+    }
 
     function updateSuggestionsList(suggestionsListArray) {
         var options = new Array(suggestionsListArray[0].length);
-        for (i = 0; i < options.length;i++) {
-            for (j = 0; j < suggestionsListArray.length;j++) {
+        for (i = 0; i < options.length; i++) {
+            for (j = 0; j < suggestionsListArray.length; j++) {
                 if (j == 0) {
                     options[i] = new Array(2);
                     options[i][j] = suggestionsListArray[0][i];
@@ -276,7 +268,7 @@ function agencyInfoautoComplete(elemID)
     }
 
     function addFormEventListener() {
-                    // document.getElementById("SaveAlertData").addEventListener("click", addNewAlertToSheet);
+        // document.getElementById("SaveAlertData").addEventListener("click", addNewAlertToSheet);
     }
     doFirst();
     // updateControls();

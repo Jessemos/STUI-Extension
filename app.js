@@ -3,7 +3,7 @@
 
 window.addEventListener("DOMContentLoaded", function () {
     var areaSheetArray = [
-        ["AreaIdSuggestions", "AreaNameSuggestions", "DSSuggestions"],
+        ["areaIdSuggestions", "areaNameSuggestions", "DSSuggestions"],
         [22, "San Fransisco SF Bay Area, CA", 7],
         [81, "Chicago, IL", 14],
         [121, "NYC-NJ", 25],
@@ -21,9 +21,10 @@ window.addEventListener("DOMContentLoaded", function () {
         [2122, "London and South East", 1144],
         [1663, "Berlin", 1666],
         [3020, "London", 1827],
-        [442, "Sydney & NSW", 100011]];
+        [442, "Sydney & NSW", 100011]
+    ];
     var agencySheetArray = [
-        ["AgencyIDSuggestions", "AgencyNameSuggestions", "AgencyUniqueDSSuggestions"],
+        ["agencyIDSuggestions", "agencyNameSuggestions", "agencyUniqueDSSuggestions"],
         [194, "BART", 11],
         [223, "VTA", 9],
         [225, "Muni Metro", 7],
@@ -188,67 +189,110 @@ window.addEventListener("DOMContentLoaded", function () {
         [1641561, "Tillamook County Transportation District", 14367],
         [1647979, "NorthWest POINT", 14373]
     ];
+
     function doFirst() {
         var agencyAreaInfoHtml =
             `
-<div class="container-fluid" id="AgencyInfo">
-<form class="needs-validation" novalidate>
-    <div class="form-row">
-        <div class="col-md-4 mb-3">
-            <div class="input-group input-group-sm mb-1">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="editorDSPage">DS</span>
+            <form>
+            <div class="form-row">
+                <div class="col-3 mb-3 d-none">
+                    <label for="editorDSPage">Metro Area Code</label>
+                    <input type="text" class="form-control form-control-sm" name="areaId" id="searchByAreaId"
+                        placeholder="Start typing" list="areaIdSuggestions"></input>
+                    <datalist id="areaIdSuggestions">
+                    </datalist>
                 </div>
-                <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
-                    aria-label="Small" aria-describedby="editorDSPage" list="DSSuggestions">
-                <datalist id="DSSuggestions">
-                </datalist>
-                </input>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="input-group input-group-sm mb-1">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="SearchAreaByName">Metro Name</span>
+                <div class="col-3 mb-3">
+                    <label for="editorDSPage">DS</label>
+                    <input type="text" class="form-control form-control-sm" name="editorDSID" id="searchByEditorDSID"
+                        placeholder="Start typing" list="DSSuggestions"></input>
+                    <datalist id="DSSuggestions">
+                    </datalist>
                 </div>
-                <input type="text" class="form-control form-control-sm" placeholder="Start Typing..."
-                    aria-label="Small" aria-describedby="SearchAreaByName" list="AreaNameSuggestions">
-                <datalist id="AreaNameSuggestions">
-                </datalist>
-                </input>
+                <div class="col mb-3">
+                    <label for="SearchAreaByName">Metro Name</label>
+                    <input type="text" class="form-control form-control-sm" name="areaName" id="searchByAreaName"
+                        placeholder="Start Typing..." list="areaNameSuggestions">
+                    </input>
+                    <datalist id="areaNameSuggestions">
+                    </datalist>
+                </div>
             </div>
-        </div>
-    </div>
-    <button class="btn btn-primary">GO!</button>
-</form>     
-
+            <div class="form-row">
+                <div class="col-3 mb-3">
+                    <label for="editorDSPage">Agency ID</label>
+                    <input type="text" class="form-control form-control-sm" name="agencyID" id="searchByAgencyID"
+                        placeholder="Start typing" list="agencyIDSuggestions"></input>
+                    <datalist id="agencyIDSuggestions">
+                    </datalist>
+                </div>
+                <div class="col mb-3">
+                    <label for="editorDSPage">Agency Name</label>
+                    <input type="text" class="form-control form-control-sm" name="agencyName" id="searchByAgencyName"
+                        placeholder="Start typing" list="agencyNameSuggestions"></input>
+                    <datalist id="agencyNameSuggestions">
+                    </datalist>
+                </div>
+                <div class="col-3 mb-3">
+                    <label for="SearchAreaByName">Agency DS</label>
+                    <input type="text" class="form-control form-control-sm" name="agencyUniqueDS" id="searchByAgencyUniqueDS"
+                        placeholder="Start Typing..." list="agencyUniqueDSSuggestions">
+                    </input>
+                    <datalist id="agencyUniqueDSSuggestions">
+                    </datalist>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col mb-3">
+                    <button class="btn btn-primary" id="goSA">Alerts</button>
+                </div>
+                <div class="col mb-3">
+                    <button class="btn btn-primary" id="goSTC">STC</button>
+                </div>
+            </div>
+        </form>
         `;
-
         var agencyInfo = [];
         agencyInfo.push(document.getElementById("agencyAreaInfo"));
         agencyInfo[0].innerHTML = agencyAreaInfoHtml;
         //google.script.run.withSuccessHandler(updateAreaInfo)
         //    .getAreaData();
-
-
         updateSuggestionsList(areaSheetArray);
+        updateSuggestionsList(agencySheetArray);
         document.addEventListener('change', function (e) {
             if (e.target.tagName == "INPUT") {
-                alert("Target ID" + e.target.id);
+
                 agencyInfoautoComplete(e.target.id);
             }
-        })
+        });
     }
-
+   
     function agencyInfoautoComplete(elemID) {
-        var elemIDlocal = document.getElementById(elemID);
-        /*if (elemIDlocal.id == "areaIDData")
-        {
-             var areaNum = areaSheetArray.map(function(value){
-             return value == 0;
-             });
+        elemVal = document.getElementById(elemID).value;
+        if (elemID == "searchByEditorDSID") {
+            var relevantValues = areaSheetArray.find(area => area[2] == elemVal);
+            document.getElementById("searchByAreaName").value = relevantValues[1];
         }
-        */
+        if (elemID == "searchByAreaName") {
+            var relevantValues = areaSheetArray.find(area => area[1] == elemVal);
+            document.getElementById("searchByEditorDSID").value = relevantValues[2];
+        }
+        if (elemID == "searchByAgencyID") {
+            var relevantValues = agencySheetArray.find(area => area[0] == elemVal);
+            document.getElementById("agencyNameSuggestions").value = relevantValues[1];
+            document.getElementById("agencyUniqueDSSuggestions").value = relevantValues[2];
+        }
+        if (elemID == "searchByAgencyName") {
+            var relevantValues = agencySheetArray.find(area => area[1] == elemVal);
+            document.getElementById("searchByAgencyID").value = relevantValues[0];
+            document.getElementById("agencyUniqueDSSuggestions").value = relevantValues[2];
+        }
+        if (elemID == "searchByAgencyUniqueDS") {
+            var relevantValues = agencySheetArray.find(area => area[2] == elemVal);
+            document.getElementById("searchByAgencyID").value = relevantValues[0];
+            document.getElementById("searchByAgencyName").value = relevantValues[1];
+        }
+
     }
 
     function updateSuggestionsList(suggestionsListArray) {
